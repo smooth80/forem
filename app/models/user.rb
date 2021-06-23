@@ -621,6 +621,14 @@ class User < ApplicationRecord
     "User:#{id}"
   end
 
+  def last_verification_date
+    email_authorizations
+      .where.not(verified_at: nil)
+      .order(created_at: :desc)
+      .first
+      &.verified_at
+  end
+
   protected
 
   # Send emails asynchronously
